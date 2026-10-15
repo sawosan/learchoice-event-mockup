@@ -73,11 +73,8 @@
     padding: 18px 18px 16px; display: grid; gap: 12px;
   }
   .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
-  h1 { margin: -4px 0 0; font-size: 24px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.15; text-wrap: balance; }
-  dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
-  dt { color: var(--muted); font-weight: 500; }
-  dd { margin: 0; font-weight: 500; }
-  .note { font-size: 12.5px; line-height: 1.45; color: var(--muted); margin: 0; }
+  h1 { margin: -4px 0 0; font-family: var(--font); font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; text-wrap: balance; }
+  .note { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--muted); margin: 0; }
 
   /* Segmented control (iOS) */
   .tabs, .seg {
@@ -85,6 +82,7 @@
   }
   .tabs { grid-template-columns: repeat(3, 1fr); }
   .seg { grid-template-columns: repeat(3, 1fr); }
+  .seg.two { grid-template-columns: repeat(2, 1fr); }
   .tabs button, .seg button {
     font-size: 14px; font-weight: 600; color: var(--fg); background: transparent; border: 0;
     border-radius: 999px; padding: 8px 6px; cursor: pointer; transition: background 0.2s, box-shadow 0.2s;
@@ -105,14 +103,14 @@
     padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 18px;
     scrollbar-width: thin;
   }
-  .panel h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; display: flex; justify-content: space-between; align-items: center; padding: 2px 2px 0; }
+  .panel h2 { margin: 0; font-family: var(--font); font-size: 21px; font-weight: 700; letter-spacing: -0.01em; display: flex; justify-content: space-between; align-items: center; padding: 2px 2px 0; }
   .panel h2 button {
     font-size: 15px; font-weight: 600; color: var(--tint); background: var(--fill); border: 0;
     border-radius: 999px; padding: 7px 14px; cursor: pointer;
   }
   .sect { display: grid; gap: 8px; }
   .sect-title { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); padding: 0 4px; }
-  .hint { font-size: 12.5px; line-height: 1.4; color: var(--muted); margin: 0; padding: 0 4px; }
+  .hint { font-size: 12.5px; font-weight: 500; line-height: 1.4; color: var(--muted); margin: 0; padding: 0 4px; }
 
   /* Grouped list (iOS inset grouped) */
   .list { background: var(--glass-strong); border-radius: var(--r-group); overflow: hidden; }
@@ -170,7 +168,13 @@
   .tints button.brand::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 3px; height: 3px; margin-left: -1.5px; border-radius: 50%; background: var(--fg); }
   .tints button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--glass-strong), 0 0 0 4px var(--tint); z-index: 1; }
   .custom { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: var(--fg); padding-top: 10px; border-top: 0.5px solid var(--sep); }
-  .custom input { width: 30px; height: 30px; border: 0; border-radius: 50%; padding: 0; background: none; cursor: pointer; }
+  .custom { flex-wrap: wrap; gap: 8px; }
+  .custom small { color: var(--muted); font-size: 12px; }
+  .cmyk-in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; }
+  .cmyk-in[hidden] { display: none !important; }
+  .cmyk-in label { display: grid; gap: 2px; font-size: 12px; font-weight: 600; color: var(--muted); text-align: center; }
+  .cmyk-in input { width: 100%; height: 36px; border: 0; border-radius: 10px; background: var(--fill); color: var(--fg); font: 600 15px var(--font); text-align: center; font-variant-numeric: tabular-nums; }
+  .custom input[type="color"] { width: 30px; height: 30px; border: 0; border-radius: 50%; padding: 0; background: none; cursor: pointer; }
   .custom input::-webkit-color-swatch-wrapper { padding: 0; }
   .custom input::-webkit-color-swatch { border: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12); }
   .custom input::-moz-color-swatch { border: 0; border-radius: 50%; }
@@ -229,18 +233,43 @@
   }
   .status { position: fixed; inset: 0; display: grid; place-items: center; font-size: 15px; font-weight: 500; color: var(--muted); pointer-events: none; }
 
+  .bar > :first-child { margin-left: auto; }
+  .bar > :last-child { margin-right: auto; }
+  .bar::-webkit-scrollbar { display: none; }
+
   @media (max-width: 760px) {
-    .card { padding: 14px 14px 12px; gap: 10px; border-radius: 24px; }
-    h1 { font-size: 19px; }
-    .card dl, .card .note { display: none; }
-    .panel {
-      top: auto; left: max(16px, env(safe-area-inset-left, 0px)); width: auto; border-radius: 24px;
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 128px); max-height: 46%;
+    .card {
+      top: calc(env(safe-area-inset-top, 0px) + 10px);
+      left: max(10px, env(safe-area-inset-left, 0px)); right: max(10px, env(safe-area-inset-right, 0px));
+      width: auto; padding: 12px 12px 10px; gap: 8px; border-radius: 22px;
     }
-    .bar { gap: 8px; }
-    .bar button { padding: 9px 11px; font-size: 13.5px; }
+    .eyebrow { display: none; }
+    h1 { margin: 0; font-size: 19px; padding: 0 4px; }
+    .tabs button { padding: 7px 4px; font-size: 14px; }
+    .note { font-size: 11.5px; padding: 0 4px; }
+
+    /* design controls become a bottom sheet */
+    .panel {
+      top: auto; left: max(8px, env(safe-area-inset-left, 0px)); right: max(8px, env(safe-area-inset-right, 0px));
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+      width: auto; max-height: 42%; border-radius: 26px; padding: 6px 14px 16px; gap: 14px;
+    }
+    .panel::before { content: ""; flex: none; width: 36px; height: 5px; border-radius: 3px; background: var(--fill-2); margin: 0 auto -4px; }
+    .panel h2 { font-size: 18px; }
+    .panel h2 button { padding: 6px 12px; font-size: 14px; }
+
+    /* one swipeable row of view buttons, sitting above the sheet when it's open */
+    .bar {
+      bottom: var(--sheet-h, 0px); flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
+      pointer-events: auto; scrollbar-width: none; gap: 8px; padding-top: 4px;
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+      transition: bottom 0.25s ease;
+    }
+    .bar.raised { padding-bottom: 8px; }
+    .group { flex-wrap: nowrap; flex: none; }
+    .bar button { padding: 9px 12px; font-size: 14px; }
   }
-  @media (prefers-reduced-motion: reduce) { .switch, .switch::after, .tabs button, .seg button, .cpick > summary::after { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .bar { transition: none !important; } .switch, .switch::after, .tabs button, .seg button, .cpick > summary::after { transition: none; } }
 </style>
 </head>
 <body>
@@ -256,12 +285,18 @@
     <button type="button" role="tab" id="tab-table" data-mode="table" aria-selected="false" aria-controls="stage">Table</button>
     <button type="button" role="tab" id="tab-together" data-mode="together" aria-selected="false" aria-controls="stage">Together</button>
   </div>
-  <dl id="specs"></dl>
   <p class="note" id="note"></p>
 </header>
 
 <aside class="panel glass" id="panel-tent" aria-label="Tent design">
   <h2>Tent design <button type="button" class="close-panel">Done</button></h2>
+  <div class="sect">
+    <div class="sect-title">Color values</div>
+    <div class="seg two vals" role="group" aria-label="Show color values as">
+      <button type="button" data-values="rgb" aria-pressed="true">RGB</button>
+      <button type="button" data-values="cmyk" aria-pressed="false">CMYK</button>
+    </div>
+  </div>
   <div class="sect">
     <div class="sect-title">Background</div>
     <div id="tent-bg"></div>
@@ -280,6 +315,13 @@
 
 <aside class="panel glass" id="panel-table" aria-label="Table throw design" hidden>
   <h2>Table throw design <button type="button" class="close-panel">Done</button></h2>
+  <div class="sect">
+    <div class="sect-title">Color values</div>
+    <div class="seg two vals" role="group" aria-label="Show color values as">
+      <button type="button" data-values="rgb" aria-pressed="true">RGB</button>
+      <button type="button" data-values="cmyk" aria-pressed="false">CMYK</button>
+    </div>
+  </div>
   <div class="sect">
     <div class="sect-title">Background</div>
     <div class="seg" role="group" aria-label="Background type" id="bg-mode">
@@ -350,26 +392,47 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 /* ================= ClearChoice palette (Measured) ================= */
+// Values from the ClearChoice "Measured palette" color pages: hex, RGB and CMYK for every tint.
+// brand = index of the tint marked "Brand color" on that family's page.
 const LEVELS = ['25', '50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
+const T = (hex, c, m, y, k) => ({ hex, cmyk: [c, m, y, k] });
 const PALETTE = [
-  { name: 'Proven', brand: '#123073', tints: ['#F6F7FB','#EEF0F6','#DFE4EF','#C3CCE2','#A1B0D3','#7A90C3','#516EB2','#325095','#21376A','#0B1D47','#070B13'] },
-  { name: 'Momentum', brand: '#276AFF', tints: ['#F4F7FF','#E9F0FF','#D4E1FF','#B4CAFF','#83AAFF','#5288FF','#276AFF','#2056CE','#1843A0','#123073','#0B1D47'] },
-  { name: 'Resolve', brand: '#609EB6', tints: ['#F3F8FA','#E6F1F5','#CAE1EA','#A7CEDC','#84BACE','#609EB6','#3D7D96','#2A6782','#0E4960','#093748','#062632'] },
-  { name: 'Foundation', brand: '#C2AB93', tints: ['#F9F7F5','#EEE8E2','#E3D9CE','#D1C0AE','#C2AB93','#A2886E','#8A7056','#6C533D','#57422F','#443324','#32281F'] },
-  { name: 'Assured', brand: '#A68585', tints: ['#F9F7F7','#F3EEEE','#DACCCC','#E7DDDD','#C2AAAA','#A68585','#946C6C','#704B4B','#523232','#391F1F','#2A1717'] },
-  { name: 'Engineered', brand: '#737963', tints: ['#F9F9F8','#F3F3F1','#E1E3DE','#C8CBC2','#A9AC9F','#8E9382','#737963','#5D654B','#454D32','#2D341D','#192300'] },
-  { name: 'Focus', brand: '#F3F3F1', tints: ['#F9F9F8','#F3F3F1','#E3E3DE','#CCCAC1','#AEAB9D'] },
-  { name: 'Neutral', brand: null, tints: ['#FFFFFF', '#131E46', '#000000'], labels: ['White', 'Artwork navy', 'Black'] },
+  { name: 'Proven', brand: 9, tints: [T('#F6F7FB',2,2,0,0), T('#EEF0F6',5,3,1,0), T('#DFE4EF',11,7,2,0), T('#C3CCE2',22,14,3,0), T('#A1B0D3',36,24,4,0), T('#7A90C3',55,38,3,0), T('#516EB2',75,51,1,0), T('#325095',91,77,10,1), T('#21376A',99,88,30,18), T('#0B1D47',100,91,39,46), T('#070B13',78,70,62,82)] },
+  { name: 'Momentum', brand: 6, tints: [T('#F4F7FF',3,2,0,0), T('#E9F0FF',7,3,0,0), T('#D4E1FF',14,7,0,0), T('#B4CAFF',27,15,0,0), T('#83AAFF',44,27,0,0), T('#5288FF',66,46,0,0), T('#276AFF',79,60,0,0), T('#2056CE',85,70,0,0), T('#1843A0',98,85,1,0), T('#123073',100,92,26,13), T('#0B1D47',100,91,39,1)] },
+  { name: 'Resolve', brand: 5, tints: [T('#F3F8FA',4,0,1,0), T('#E6F1F5',8,1,2,0), T('#CAE1EA',19,4,5,0), T('#A7CEDC',33,7,10,0), T('#84BACE',47,13,13,0), T('#609EB6',64,25,21,0), T('#3D7D96',78,41,31,4), T('#2A6782',86,52,34,11), T('#0E4960',94,64,43,28), T('#093748',95,68,50,45), T('#062632',92,70,55,63)] },
+  { name: 'Foundation', brand: 4, tints: [T('#F9F7F5',2,2,2,0), T('#EEE8E2',5,7,9,0), T('#E3D9CE',10,12,16,0), T('#D1C0AE',18,22,30,0), T('#C2AB93',25,30,42,0), T('#A2886E',36,43,58,6), T('#8A7056',41,50,67,17), T('#6C533D',46,58,73,34), T('#57422F',50,61,73,47), T('#443324',54,64,77,59), T('#32281F',61,64,73,69)] },
+  { name: 'Assured', brand: 5, tints: [T('#F9F7F7',2,2,1,0), T('#F3EEEE',4,5,4,0), T('#DACCCC',8,11,8,0), T('#E7DDDD',13,18,14,0), T('#C2AAAA',24,32,27,0), T('#A68585',36,48,40,3), T('#946C6C',39,58,49,12), T('#704B4B',46,57,59,32), T('#523232',49,72,64,52), T('#391F1F',53,74,67,70), T('#2A1717',60,73,67,77)] },
+  { name: 'Engineered', brand: 6, tints: [T('#F9F9F8',2,1,1,0), T('#F3F3F1',4,2,3,0), T('#E1E3DE',11,7,11,0), T('#C8CBC2',22,14,22,0), T('#A9AC9F',36,26,37,0), T('#8E9382',46,34,49,4), T('#737963',55,41,62,15), T('#5D654B',61,45,72,27), T('#454D32',65,49,80,44), T('#2D341D',68,54,84,63), T('#192300',70,56,81,74)] },
+  { name: 'Focus', brand: 1, tints: [T('#F9F9F8',2,1,1,0), T('#F3F3F1',4,2,3,0), T('#E3E3DE',10,7,10,0), T('#CCCAC1',20,16,22,0), T('#AEAB9D',33,27,37,0)] },
+  { name: 'Neutral', brand: -1, tints: [T('#FFFFFF',0,0,0,0), T('#000000',0,0,0,100)], labels: ['White', 'Black'] },
 ];
-const NAMES = new Map();
-for (const f of PALETTE) f.tints.forEach((hex, i) => {
-  const key = hex.toUpperCase();
-  if (!NAMES.has(key)) NAMES.set(key, f.labels ? f.labels[i] : `${f.name} ${LEVELS[i]}`);
-});
-NAMES.set('#131F46', 'Artwork navy');
-for (const f of PALETTE) if (f.brand) NAMES.set(f.brand.toUpperCase(), `${f.name} (brand)`);
-const nameOf = hex => NAMES.get(hex.toUpperCase()) || 'Custom';
+const tintName = (f, i) => (f.labels ? f.labels[i] : `${f.name} ${LEVELS[i]}`) + (i === f.brand ? ' (brand)' : '');
+// Lookup by hex; brand tints win when a hex appears in two families (e.g. #0B1D47 = Proven 800 brand).
+const INFO = new Map();
+for (const f of PALETTE) if (f.brand >= 0) { const t = f.tints[f.brand]; INFO.set(t.hex, { name: tintName(f, f.brand), cmyk: t.cmyk }); }
+for (const f of PALETTE) f.tints.forEach((t, i) => { if (!INFO.has(t.hex)) INFO.set(t.hex, { name: tintName(f, i), cmyk: t.cmyk }); });
+const nameOf = hex => (INFO.get(hex.toUpperCase()) || { name: 'Custom' }).name;
 
+// Screen approximations, used only for custom colors that aren't in the palette.
+function approxCmyk(hex) {
+  const [r, g, b] = hexToRgb(hex).map(v => v / 255), k = 1 - Math.max(r, g, b);
+  if (k >= 1) return [0, 0, 0, 100];
+  return [(1 - r - k) / (1 - k), (1 - g - k) / (1 - k), (1 - b - k) / (1 - k), k].map(v => Math.round(v * 100));
+}
+function cmykToHex(c, m, y, k) {
+  const ch = v => Math.round(255 * (1 - v / 100) * (1 - k / 100)).toString(16).padStart(2, '0');
+  return ('#' + ch(c) + ch(m) + ch(y)).toUpperCase();
+}
+const valueMode = { m: 'rgb' };
+function valueText(hex) {
+  hex = hex.toUpperCase();
+  const info = INFO.get(hex);
+  if (valueMode.m === 'cmyk') return info ? `CMYK ${info.cmyk.join(' ')}` : `CMYK ≈ ${approxCmyk(hex).join(' ')}`;
+  const [r, g, b] = hexToRgb(hex);
+  return `${hex} · RGB ${r} ${g} ${b}`;
+}
+
+const PICKERS = [];
 let openPicker = null;
 function colorPicker(host, label, value, onChange) {
   const d = document.createElement('details');
@@ -378,49 +441,82 @@ function colorPicker(host, label, value, onChange) {
   const sw = d.querySelector('.swatch'), nm = d.querySelector('.cname span'), hx = d.querySelector('.cname small');
   const pal = d.querySelector('.pal');
   const chips = [];
+  let current = value;
   for (const f of PALETTE) {
     const row = document.createElement('div');
     row.className = 'fam';
     row.innerHTML = `<span>${f.name}</span><div class="tints"></div>`;
     const tints = row.querySelector('.tints');
-    f.tints.forEach((hex, i) => {
+    f.tints.forEach((t, i) => {
       const b = document.createElement('button');
-      b.type = 'button'; b.style.background = hex; b.dataset.hex = hex;
-      const nmTxt = f.labels ? f.labels[i] : `${f.name} ${LEVELS[i]}`;
-      b.title = `${nmTxt} · ${hex}`; b.setAttribute('aria-label', `${nmTxt} ${hex}`);
-      if (f.brand && hex.toUpperCase() === f.brand.toUpperCase()) b.classList.add('brand');
-      b.addEventListener('click', () => { set(hex); onChange(hex); });
+      b.type = 'button'; b.style.background = t.hex; b.dataset.hex = t.hex; b.dataset.name = tintName(f, i); b.dataset.cmyk = t.cmyk.join(' ');
+      if (i === f.brand) b.classList.add('brand');
+      b.addEventListener('click', () => { set(t.hex); onChange(t.hex); });
       tints.appendChild(b); chips.push(b);
     });
     pal.appendChild(row);
   }
-  const custom = document.createElement('label');
+  const uid = Math.random().toString(36).slice(2, 8);
+  const custom = document.createElement('div');
   custom.className = 'custom';
-  const cid = 'c-' + Math.random().toString(36).slice(2, 8);
-  custom.htmlFor = cid;
-  custom.innerHTML = `<span>Custom color</span><input type="color" id="${cid}">`;
-  const input = custom.querySelector('input');
-  input.addEventListener('input', () => { set(input.value); onChange(input.value); });
+  custom.innerHTML = `<label for="rgb-${uid}" class="c-rgb">Custom color</label><input type="color" id="rgb-${uid}" class="c-rgb">
+    <span class="c-cmyk">Custom CMYK <small>(screen approx.)</small></span>
+    <span class="c-cmyk cmyk-in">${['C', 'M', 'Y', 'K'].map(ch => `<label>${ch}<input type="number" min="0" max="100" step="1" inputmode="numeric" data-ch="${ch}" id="${ch}-${uid}"></label>`).join('')}</span>`;
+  const input = custom.querySelector('input[type="color"]');
+  const nums = [...custom.querySelectorAll('input[type="number"]')];
+  input.addEventListener('input', () => { set(input.value); onChange(input.value.toUpperCase()); });
+  nums.forEach(n => n.addEventListener('change', () => {
+    const v = nums.map(x => Math.min(100, Math.max(0, Math.round(+x.value || 0))));
+    const hex = cmykToHex(...v);
+    set(hex, v); onChange(hex);
+  }));
   pal.appendChild(custom);
-  const lab = document.createElement('span');
-  lab.className = 'sr-label';
-  function set(hex) {
-    hex = hex.toUpperCase();
-    sw.style.background = hex; nm.textContent = label ? `${label}: ${nameOf(hex)}` : nameOf(hex); hx.textContent = hex;
-    input.value = hex.toLowerCase();
-    chips.forEach(c => c.setAttribute('aria-pressed', String(c.dataset.hex.toUpperCase() === hex)));
+  function refresh(cmykOverride) {
+    const isCmyk = valueMode.m === 'cmyk';
+    custom.querySelectorAll('.c-rgb').forEach(e => { e.hidden = isCmyk; });
+    custom.querySelectorAll('.c-cmyk').forEach(e => { e.hidden = !isCmyk; });
+    const name = nameOf(current);
+    nm.textContent = label ? `${label}: ${name}` : name;
+    hx.textContent = valueText(current);
+    const info = INFO.get(current);
+    const cm = cmykOverride || (info ? info.cmyk : approxCmyk(current));
+    nums.forEach((n, i) => { n.value = cm[i]; });
+    chips.forEach(c => {
+      const val = isCmyk ? `CMYK ${c.dataset.cmyk}` : c.dataset.hex;
+      c.title = `${c.dataset.name} · ${val}`; c.setAttribute('aria-label', `${c.dataset.name}, ${val}`);
+    });
+  }
+  function set(hex, cmykOverride) {
+    current = hex.toUpperCase();
+    sw.style.background = current;
+    input.value = current.toLowerCase();
+    chips.forEach(c => c.setAttribute('aria-pressed', String(c.dataset.hex === current)));
+    refresh(cmykOverride);
   }
   d.addEventListener('toggle', () => {
     if (d.open) { if (openPicker && openPicker !== d) openPicker.open = false; openPicker = d; }
   });
   set(value);
   host.appendChild(d);
-  return { set, el: d };
+  const api = { set, refresh, el: d };
+  PICKERS.push(api);
+  return api;
 }
+function setValueMode(m) {
+  valueMode.m = m;
+  document.querySelectorAll('.vals button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.values === m)));
+  for (let i = PICKERS.length - 1; i >= 0; i--) {
+    if (!PICKERS[i].el.isConnected) PICKERS.splice(i, 1); else PICKERS[i].refresh();
+  }
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.vals button[data-values]');
+  if (b) setValueMode(b.dataset.values);
+});
 
 /* ================= Logo versions ================= */
-// Official logo colors: "Primary - on light" is Proven navy (CMYK 100/92/39/46); on dark backgrounds the logo is white.
-const LOGO_DARK = '#123073', LOGO_LIGHT = '#FFFFFF';
+// Official logo colors: "Primary - on light" is Proven 800, the Proven brand color (CMYK 100/91/39/46); on dark backgrounds the logo is white.
+const LOGO_DARK = '#0B1D47', LOGO_LIGHT = '#FFFFFF';
 function hexToRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
 const lin = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
 const lumRgb = ([r, g, b]) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
@@ -607,7 +703,7 @@ const person = new THREE.Group();
 
 // Tent textures
 const ART_SVG = document.getElementById('art-svg').textContent.trim();
-const TENT_DEFAULT = '#123073';   // Proven (brand)
+const TENT_DEFAULT = '#123073';   // Momentum 800
 const TEX_W = Math.min(2048, renderer.capabilities.maxTextureSize);
 const TEX_H = Math.round(TEX_W * ART.trimH / ART.trimW);
 const tentTextures = [];
@@ -996,23 +1092,20 @@ colorPicker(document.getElementById('tent-bg'), '', TENT_DEFAULT, hex => {
 /* ================= Modes, views, toggles ================= */
 const MODES = {
   tent: {
-    eyebrow: 'Canopy mockup · 4 panels · for review', title: 'ClearChoice 10′ Zoom Tent',
-    specs: [['Canopy', '118.375″ × 118.375″ visual'], ['Roof', '72″ panel height, curved hips'], ['Valance', '13.25″ drop'], ['Figure', '5′10″ person, toggle on for scale'], ['Artwork', '¼-scale file, CMYK']],
-    note: 'Roof shape follows the printer’s template GT_ZoomTent10_Canopy. Frame and leg height are approximate. Colors on screen will differ from dye-sub print.',
+    eyebrow: 'Mockup for review', title: 'ClearChoice 10′ Zoom Tent',
+    note: 'Colors on screen will differ from the dye-sub print.',
     views: { three: ['¾ view', [235, 150, 300], [0, 72, 0]], front: ['Front', [0, 96, 335], [0, 84, 0]], eye: ['Eye level', [120, 64, 330], [0, 98, 0]], top: ['Top', [0, 470, 0.5], [0, 80, 0]], under: ['Underside', [24, 46, 34], [0, 112, 0]] },
     toggles: ['t-rotate', 't-person', 't-letters', 't-guides', 't-panel'], panel: 'panel-tent',
   },
   table: {
-    eyebrow: 'Table throw mockup · for review', title: 'ClearChoice 6ft Table Throw',
-    specs: [['Throw', '126.5″ × 84″, full size'], ['Table', '6ft · 72″ × 30″ × 30″ h'], ['Drop', '27″ front/back, 27.25″ sides'], ['Hem', '3″ above the floor'], ['Edges', 'Heat sealed']],
-    note: 'Fabric folds at the corners are approximate. Colors on screen will differ from dye-sub print.',
-    views: { three: ['¾ view', [118, 82, 150], [0, 22, 0]], front: ['Front', [0, 34, 185], [0, 22, 0]], side: ['Side', [170, 36, 0.5], [0, 22, 0]], top: ['Top', [0, 215, 0.5], [0, 20, 0]], back: ['Back', [-60, 50, -160], [0, 22, 0]] },
+    eyebrow: 'Mockup for review', title: 'ClearChoice 6ft Table Throw',
+    note: 'Colors on screen will differ from the dye-sub print.',
+    views: { three: ['¾ view', [118, 70, 150], [0, 11, 0]], front: ['Front', [0, 28, 185], [0, 15, 0]], side: ['Side', [170, 30, 0.5], [0, 14, 0]], top: ['Top', [0, 215, 0.5], [0, 15, 0]], back: ['Back', [-60, 44, -160], [0, 12, 0]] },
     toggles: ['t-rotate', 't-panel'], panel: 'panel-table',
   },
   together: {
-    eyebrow: 'Event setup · view only', title: 'Tent and Table Together',
-    specs: [['Tent', '10′ × 10′ Zoom canopy'], ['Table', '6ft throw, centered in front'], ['Gap', 'About 10″ in front of the tent legs']],
-    note: 'Shows the current tent and table designs. To change colors, use the Tent and Table tabs.',
+    eyebrow: 'View only', title: 'Tent and Table Together',
+    note: 'Colors on screen will differ from the dye-sub print.',
     views: { three: ['¾ view', [250, 160, 360], [0, 52, 38]], front: ['Front', [0, 86, 430], [0, 58, 40]], eye: ['Eye level', [110, 64, 380], [0, 62, 40]], top: ['Top', [0, 560, 30], [0, 40, 30]] },
     toggles: ['t-rotate'], panel: null,
   },
@@ -1054,6 +1147,7 @@ function applyVisibility() {
   labels.forEach(el => { el.hidden = !(m === 'tent' && state.letters); });
   const panelId = MODES[m].panel;
   ['panel-tent', 'panel-table'].forEach(id => { document.getElementById(id).hidden = !(id === panelId && state.panel); });
+  if (typeof scheduleRegion === 'function') scheduleRegion();
 }
 
 function bindToggle(id, key, apply) {
@@ -1077,7 +1171,6 @@ function setMode(mode, instant = false) {
   document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === mode)));
   document.getElementById('eyebrow').textContent = M.eyebrow;
   document.getElementById('title').textContent = M.title;
-  document.getElementById('specs').innerHTML = M.specs.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
   document.getElementById('note').textContent = M.note;
   const views = document.getElementById('views');
   views.innerHTML = Object.entries(M.views).map(([k, v]) => `<button type="button" data-view="${k}" aria-pressed="false">${v[0]}</button>`).join('');
@@ -1110,11 +1203,89 @@ function applyTheme() {
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
+// Frame the artwork inside the area the overlays leave free (above the sheet on phones, left of the panel on desktop).
+const mobileMQ = matchMedia('(max-width: 760px)');
+const view = { l: 0, t: 0, w: 1, h: 1, zoom: 1 }, viewTarget = { ...view };
+var viewInit = false;
+function visiblePanel() {
+  const id = MODES[state.mode].panel;
+  const el = id && document.getElementById(id);
+  return el && !el.hidden ? el : null;
+}
+function computeRegion() {
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  let l = 0, t = 0, r = W, b = H;
+  const groups = [...document.querySelectorAll('.bar .group')].filter(g => g.offsetParent && [...g.children].some(c => !c.hidden));
+  if (groups.length) b = Math.min(...groups.map(g => g.getBoundingClientRect().top)) - 8;
+  const panel = visiblePanel();
+  if (mobileMQ.matches) {
+    t = document.querySelector('.card').getBoundingClientRect().bottom + 6;
+    if (panel) b = Math.min(b, panel.getBoundingClientRect().top - 6);
+  } else if (panel) {
+    r = panel.getBoundingClientRect().left - 8;
+  }
+  const w = Math.max(160, r - l), h = Math.max(140, b - t);
+  // Presets fit a roughly square frame; zoom out when the free area is narrower than that.
+  const zoom = Math.min(mobileMQ.matches ? 1.3 : 1, Math.max(0.55, (w / h) / 1.05));
+  return { l, t, w, h, zoom };
+}
+function updateSheetOffset() {
+  const panel = visiblePanel(), bar = document.querySelector('.bar');
+  if (mobileMQ.matches && panel) {
+    const pr = panel.getBoundingClientRect();
+    document.documentElement.style.setProperty('--sheet-h', (canvas.clientHeight - pr.top + 2) + 'px');
+    bar.classList.add('raised');
+  } else {
+    document.documentElement.style.setProperty('--sheet-h', '0px');
+    bar.classList.remove('raised');
+  }
+}
+var regionQueued = false;
+function scheduleRegion() {
+  if (regionQueued) return;
+  regionQueued = true;
+  requestAnimationFrame(() => {
+    regionQueued = false;
+    updateSheetOffset();
+    // bar position settles after the sheet offset changes; measure on the next frame
+    requestAnimationFrame(() => {
+      Object.assign(viewTarget, computeRegion());
+      if (!viewInit || reduceMotion) { Object.assign(view, viewTarget); viewInit = true; applyView(); }
+    });
+  });
+}
+function applyView() {
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+  camera.aspect = view.w / view.h;
+  camera.setViewOffset(view.w, view.h, -view.l, -view.t, W, H);
+  camera.zoom = view.zoom;
+  camera.updateProjectionMatrix();
+}
+let lastStep = 0;
+function stepView(now) {
+  const dt = lastStep ? Math.min(0.25, (now - lastStep) / 1000) : 0.016;
+  lastStep = now;
+  const k = 1 - Math.exp(-dt / 0.09);          // time-based glide, about 0.3s to settle on any device
+  let moving = false;
+  for (const key of ['l', 't', 'w', 'h', 'zoom']) {
+    const d = viewTarget[key] - view[key];
+    if (Math.abs(d) > (key === 'zoom' ? 0.0005 : 0.3)) { view[key] += d * k; moving = true; }
+    else view[key] = viewTarget[key];
+  }
+  if (moving) applyView();
+}
 function resize() {
   const w = canvas.clientWidth, h = canvas.clientHeight;
   renderer.setSize(w, h, false);
-  camera.aspect = w / h; camera.fov = w < 600 ? 44 : 34; camera.updateProjectionMatrix();
+  camera.fov = 34;
+  applyView();
+  scheduleRegion();
 }
+const ro = new ResizeObserver(scheduleRegion);
+['panel-tent', 'panel-table'].forEach(id => ro.observe(document.getElementById(id)));
+ro.observe(document.querySelector('.card'));
+ro.observe(document.querySelector('.bar'));
+mobileMQ.addEventListener('change', scheduleRegion);
 window.addEventListener('resize', resize);
 
 const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -1126,6 +1297,7 @@ function frameLoop(now) {
     controls.target.lerpVectors(tween.from.target, tween.to.target, k);
     if (t === 1) tween = null;
   }
+  stepView(now);
   controls.update();
   if (camera.position.y < 4) camera.position.y = 4;
   if (state.mode === 'tent' && state.letters) {
