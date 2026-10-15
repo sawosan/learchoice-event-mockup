@@ -38,14 +38,14 @@
       --bg: #0D1016; --fg: #F2F4F8; --muted: rgba(235, 238, 245, 0.6); --sep: rgba(235, 238, 245, 0.12);
       --glass: rgba(36, 40, 50, 0.52); --glass-strong: rgba(44, 48, 60, 0.82); --glass-edge: rgba(255, 255, 255, 0.16);
       --glass-shade: rgba(0, 0, 0, 0.4); --fill: rgba(118, 118, 128, 0.24); --fill-2: rgba(118, 118, 128, 0.34);
-      --pill: rgba(255, 255, 255, 0.2); --tint: #0A84FF; --switch-on: #30D158; --knob: #FFFFFF; color-scheme: dark;
+      --pill: rgba(255, 255, 255, 0.26); --tint: #0A84FF; --switch-on: #30D158; --knob: #FFFFFF; color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0D1016; --fg: #F2F4F8; --muted: rgba(235, 238, 245, 0.6); --sep: rgba(235, 238, 245, 0.12);
     --glass: rgba(36, 40, 50, 0.52); --glass-strong: rgba(44, 48, 60, 0.82); --glass-edge: rgba(255, 255, 255, 0.16);
     --glass-shade: rgba(0, 0, 0, 0.4); --fill: rgba(118, 118, 128, 0.24); --fill-2: rgba(118, 118, 128, 0.34);
-    --pill: rgba(255, 255, 255, 0.2); --tint: #0A84FF; --switch-on: #30D158; --knob: #FFFFFF; color-scheme: dark;
+    --pill: rgba(255, 255, 255, 0.26); --tint: #0A84FF; --switch-on: #30D158; --knob: #FFFFFF; color-scheme: dark;
   }
 
   [hidden] { display: none !important; }
@@ -68,12 +68,25 @@
     position: fixed;
     top: calc(env(safe-area-inset-top, 0px) + 16px);
     left: max(16px, env(safe-area-inset-left, 0px));
-    width: min(340px, calc(100% - 32px));
+    width: min(384px, calc(100% - 32px));
     border-radius: var(--r-card);
     padding: 18px 18px 16px; display: grid; gap: 12px;
   }
   .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
   h1 { margin: -4px 0 0; font-family: var(--font); font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; text-wrap: balance; }
+  .title-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .title-row h1 { min-width: 0; }
+  .theme-btn {
+    flex: none; width: 38px; height: 38px; border-radius: 50%; border: 0; cursor: pointer;
+    display: grid; place-items: center; color: var(--fg); background: var(--fill);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .theme-btn:hover { background: var(--fill-2); }
+  .theme-btn:active { transform: scale(0.92); }
+  .theme-btn svg { width: 19px; height: 19px; grid-area: 1 / 1; }
+  .theme-btn .i-sun { display: none; }
+  .is-dark .theme-btn .i-sun { display: block; }
+  .is-dark .theme-btn .i-moon { display: none; }
   .note { font-size: 13px; font-weight: 500; line-height: 1.45; color: var(--muted); margin: 0; }
 
   /* Segmented control (iOS) */
@@ -245,6 +258,7 @@
     }
     .eyebrow { display: none; }
     h1 { margin: 0; font-size: 19px; padding: 0 4px; }
+    .theme-btn { width: 34px; height: 34px; }
     .tabs button { padding: 7px 4px; font-size: 14px; }
     .note { font-size: 11.5px; padding: 0 4px; }
 
@@ -279,7 +293,13 @@
 
 <header class="card glass">
   <div class="eyebrow" id="eyebrow">Event kit mockup · for review</div>
-  <h1 id="title">ClearChoice 10′ Zoom Tent</h1>
+  <div class="title-row">
+    <h1 id="title">ClearChoice 10′ Zoom Tent</h1>
+    <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to dark mode" title="Switch to dark mode">
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z" fill="currentColor"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+    </button>
+  </div>
   <div class="tabs" role="tablist" aria-label="Mockup">
     <button type="button" role="tab" id="tab-tent" data-mode="tent" aria-selected="true" aria-controls="stage">Tent</button>
     <button type="button" role="tab" id="tab-table" data-mode="table" aria-selected="false" aria-controls="stage">Table</button>
@@ -290,13 +310,6 @@
 
 <aside class="panel glass" id="panel-tent" aria-label="Tent design">
   <h2>Tent design <button type="button" class="close-panel">Done</button></h2>
-  <div class="sect">
-    <div class="sect-title">Color values</div>
-    <div class="seg two vals" role="group" aria-label="Show color values as">
-      <button type="button" data-values="rgb" aria-pressed="true">RGB</button>
-      <button type="button" data-values="cmyk" aria-pressed="false">CMYK</button>
-    </div>
-  </div>
   <div class="sect">
     <div class="sect-title">Background</div>
     <div id="tent-bg"></div>
@@ -315,13 +328,6 @@
 
 <aside class="panel glass" id="panel-table" aria-label="Table throw design" hidden>
   <h2>Table throw design <button type="button" class="close-panel">Done</button></h2>
-  <div class="sect">
-    <div class="sect-title">Color values</div>
-    <div class="seg two vals" role="group" aria-label="Show color values as">
-      <button type="button" data-values="rgb" aria-pressed="true">RGB</button>
-      <button type="button" data-values="cmyk" aria-pressed="false">CMYK</button>
-    </div>
-  </div>
   <div class="sect">
     <div class="sect-title">Background</div>
     <div class="seg" role="group" aria-label="Background type" id="bg-mode">
@@ -1194,12 +1200,31 @@ const matchesDark = () => {
   const t = document.documentElement.dataset.theme;
   return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
 };
+const hemi = scene.children.find(o => o.isHemisphereLight);
 function applyTheme() {
+  const dark = matchesDark();
+  document.documentElement.classList.toggle('is-dark', dark);
   const bg = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--bg').trim());
   scene.background = bg;
-  scene.fog = new THREE.Fog(bg, 800, 1900);
-  groundMat.opacity = matchesDark() ? 0.45 : 0.16;
+  scene.fog = new THREE.Fog(bg, dark ? 600 : 800, dark ? 1500 : 1900);
+  // Atmosphere: a bright daylight set for light mode, a softer evening set for dark mode.
+  groundMat.opacity = dark ? 0.5 : 0.16;
+  if (hemi) { hemi.intensity = dark ? 0.32 : 0.6; hemi.groundColor.set(dark ? 0x1a1e28 : 0x9096a3); }
+  sun.intensity = dark ? 1.25 : 1.7;
+  sun.color.set(dark ? 0xdfe6ff : 0xffffff);
+  steel.color.set(dark ? 0x7a8293 : 0x2b2f37);   // keep the frame readable against the dark ground
+  renderer.toneMappingExposure = 1;
+  const btn = document.getElementById('theme-btn');
+  const label = dark ? 'Switch to light mode' : 'Switch to dark mode';
+  btn.setAttribute('aria-label', label); btn.title = label;
 }
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const next = matchesDark() ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('cc-mockup-theme', next); } catch (e) {}
+  applyTheme();
+});
+try { const saved = localStorage.getItem('cc-mockup-theme'); if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved; } catch (e) {}
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
