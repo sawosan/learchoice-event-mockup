@@ -542,7 +542,7 @@ function valanceGeometry() {
 const roofGeo = roofGeometry(), valGeo = valanceGeometry();
 const tentMats = [], panels = [];
 for (let i = 0; i < 4; i++) {
-  const mat = new THREE.MeshStandardMaterial({ color: 0x1843a0, roughness: 0.86, metalness: 0, side: THREE.DoubleSide, envMapIntensity: 0.45 });
+  const mat = new THREE.MeshStandardMaterial({ color: 0x123073, roughness: 0.86, metalness: 0, side: THREE.DoubleSide, envMapIntensity: 0.45 });
   tentMats.push(mat);
   const grp = new THREE.Group();
   grp.rotation.y = i * Math.PI / 2;
@@ -607,7 +607,7 @@ const person = new THREE.Group();
 
 // Tent textures
 const ART_SVG = document.getElementById('art-svg').textContent.trim();
-const TENT_DEFAULT = '#1843A0';   // Momentum 700
+const TENT_DEFAULT = '#123073';   // Proven (brand)
 const TEX_W = Math.min(2048, renderer.capabilities.maxTextureSize);
 const TEX_H = Math.round(TEX_W * ART.trimH / ART.trimW);
 const tentTextures = [];
