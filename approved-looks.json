@@ -1,3 +1,9 @@
 {
-  "looks": []
+  "looks": [
+    {
+  "name": "Gradient Table",
+  "note": "",
+  "look": "eyJ2IjoxLCJ0IjoidG9nZXRoZXIiLCJ0YyI6IjYwOUVCNiIsInRsIjoibCIsImIiOiJnIiwiYnMiOiIwQjFENDciLCJncCI6W1s0MCw2MCwiRTNEMkQ5Il0sWzU1MCwzMDAsIkYyRUJFMyJdLFs5NzAsMTIwLCJFNEYzRkEiXSxbNDAsOTYwLCJFM0Y0RkQiXSxbOTIwLDk0MCwiRjZGMUYyIl1dLCJncyI6NTAsInMiOjEsInNvIjo3LCJzYyI6IkZGRkZGRiIsImxsIjoiYSJ9"
+},
+  ]
 }
